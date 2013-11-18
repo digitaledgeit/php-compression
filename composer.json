@@ -13,7 +13,7 @@
 	],
 	"require": {
 		"php": "~5.3",
-		"digitaledgeit/filesystem": "@dev"
+		"digitaledgeit/filesystem": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~3.7"
