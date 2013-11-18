@@ -1,0 +1,26 @@
+{
+	"name":         "digitaledgeit/compression",
+	"type":         "library",
+	"description":  "Library for the compression",
+	"keywords":     ["compression", "zip"],
+	"homepage":     "http://www.digitaledgeit.com.au",
+	"license":      "CC-BY-NC-ND-3.0",
+	"authors": [
+		{
+			"name":     "James Newell",
+			"email":    "james@digitaledgeit.com.au"
+		}
+	],
+	"require": {
+		"php": "~5.3",
+		"digitaledgeit/filesystem": "@dev"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~3.7"
+	},
+	"autoload": {
+		"psr-0": {
+			"deit\\compression\\": "src/"
+		}
+	}
+}
