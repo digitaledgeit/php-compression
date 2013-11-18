@@ -68,6 +68,11 @@ class ZipArchive implements \ArrayAccess{
 	 */
 	public function addFile($path, $name = null) {
 
+		//check the file exists
+		if (!is_file($path)) {
+			throw new \InvalidArgumentException("File \"$path\" not found.");
+		}
+
 		//set the default name
 		if (is_null($name)) {
 			$name = basename($path);
@@ -78,11 +83,7 @@ class ZipArchive implements \ArrayAccess{
 		// @see http://stackoverflow.com/questions/4620205/php-ziparchive-corrupt-in-windows
 		$name = str_replace('\\', '/', ltrim($name, '\\/'));
 
-		//check the file exists
-		if (!is_file($path)) {
-			throw new \InvalidArgumentException("File \"$path\" not found.");
-		}
-		
+		//TODO: file descriptor limit restriction may be met, close and re-open the archive
 		if ($this->archive->addFile($path, $name) === false) {
 			throw new \RuntimeException(sprintf('Unable to add file "%s" to ZIP archive.', $path));
 		}
@@ -100,6 +101,11 @@ class ZipArchive implements \ArrayAccess{
 	 */
 	public function addFolder($path, $name = null) {
 		$fs = new Filesystem();
+
+		//check the folder exists
+		if (!is_dir($path)) {
+			throw new \InvalidArgumentException("Folder \"$path\" not found.");
+		}
 
 		$path = rtrim($path, '\\//');
 
@@ -212,7 +218,9 @@ class ZipArchive implements \ArrayAccess{
 	 * @inheritdoc
 	 */
 	public function __destruct() {
-		if ($this->archive !== false) $this->close();
+		if ($this->archive !== false) {
+			$this->close();
+		}
 	}
 
 }
