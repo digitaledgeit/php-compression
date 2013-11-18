@@ -27,7 +27,7 @@ class ZipArchive implements \ArrayAccess{
 		
 		if (file_exists($path)) {
 			$flags = null;
-			//$flags = \ZipArchive::OVERWRITE;
+			$flags = \ZipArchive::OVERWRITE;
 		} else {
 			$flags = \ZipArchive::CREATE;
 		}
@@ -114,15 +114,23 @@ class ZipArchive implements \ArrayAccess{
 		// @see http://us.php.net/manual/en/ziparchive.addfile.php#89813
 		// @see http://stackoverflow.com/questions/4620205/php-ziparchive-corrupt-in-windows
 		$name = str_replace('\\', '/', ltrim($name, '\\/'));
-		
-		if ($this->archive->addEmptyDir($name) === false) {
-			throw new \RuntimeException("Unable to add folder \"$path\" to ZIP archive.");
+
+		if (!empty($name) && $this->archive->statName($name) === false) {
+			if ($this->archive->addEmptyDir($name) === false) {
+				throw new \RuntimeException("Unable to add folder \"$path\" to ZIP archive as \"$name\".");
+			}
 		}
 
 		$f = new Finder($path);
-		foreach ($f as $p) {
-			$n = $name.'/'.$fs->getRelativePath($p, $path);
-			$this->add($p, $n);
+		foreach ($f->depth(1) as $p) {
+
+			if (empty($name)) {
+				$n = $fs->getRelativePath($p->getPathname(), $path);
+			} else {
+				$n = $name.'/'.$fs->getRelativePath($p->getPathname(), $path);
+			}
+
+			$this->add($p->getPathname(), $n);
 				
 		}
 		
