@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "0c3682eceba3b6a2a41fde8c0911e132",
+    "hash": "f4adcbd299020ffd79ea8563c9d34d40",
     "packages": [
         {
             "name": "digitaledgeit/filesystem",
@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/digitaledgeit/php-filesystem.git",
-                "reference": "95b72af6d66051fbbab2d755cd1608247e09d07e"
+                "reference": "bab72c05505276d3ee41cf1c832cef6ed4a54631"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/digitaledgeit/php-filesystem/zipball/95b72af6d66051fbbab2d755cd1608247e09d07e",
-                "reference": "95b72af6d66051fbbab2d755cd1608247e09d07e",
+                "url": "https://api.github.com/repos/digitaledgeit/php-filesystem/zipball/bab72c05505276d3ee41cf1c832cef6ed4a54631",
+                "reference": "bab72c05505276d3ee41cf1c832cef6ed4a54631",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
             "keywords": [
                 "filesystem"
             ],
-            "time": "2013-11-14 01:20:01"
+            "time": "2013-11-18 04:22:57"
         }
     ],
     "packages-dev": [
