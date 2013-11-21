@@ -25,11 +25,12 @@ class ZipArchive implements \ArrayAccess{
 	public function __construct($path) {
 		$this->archive = new \ZipArchive();
 		
-		if (file_exists($path)) {
+		if (is_file($path)) {
 			$flags = null;
-			$flags = \ZipArchive::OVERWRITE;
-		} else {
+		} else if (!file_exists($path)) {
 			$flags = \ZipArchive::CREATE;
+		} else {
+			throw new \InvalidArgumentException(sprintf('Archive path "%s" exists but isn\'t a file.'));
 		}
 		
 		//try and open the archive
@@ -127,8 +128,9 @@ class ZipArchive implements \ArrayAccess{
 			}
 		}
 
-		$f = new Finder($path);
-		foreach ($f->depth(1) as $p) {
+		//** I had to use \DirectoryIterator instead of \deit\filesystem\Finder because I kept hitting the directory not empty when trying to remove files after this method
+		$it = new \FilesystemIterator($path);
+		foreach ($it as $p) {
 
 			if (empty($name)) {
 				$n = $fs->getRelativePath($p->getPathname(), $path);
@@ -137,7 +139,7 @@ class ZipArchive implements \ArrayAccess{
 			}
 
 			$this->add($p->getPathname(), $n);
-				
+
 		}
 		
 		return $this;
