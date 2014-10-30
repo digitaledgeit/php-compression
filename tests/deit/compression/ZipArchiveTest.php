@@ -17,7 +17,8 @@ class ZipArchiveTest extends \PHPUnit_Framework_TestCase {
 		$zip->close();
 
 		$this->assertGreaterThan(0, filesize($path));
-		echo $path;
+
+		unlink($path);
 	}
 
 	public function test_folders() {
@@ -28,7 +29,8 @@ class ZipArchiveTest extends \PHPUnit_Framework_TestCase {
 		$zip->close();
 
 		$this->assertGreaterThan(0, filesize($path));
-		echo $path;
+
+		unlink($path);
 	}
 
 }
