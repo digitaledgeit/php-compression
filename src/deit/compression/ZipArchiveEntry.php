@@ -13,7 +13,7 @@ class ZipArchiveEntry {
 	 * The name the entry
 	 * @var     string
 	 */
-	private $name;
+	private $index;
 
 	/**
 	 * The archive containing the entry
@@ -22,41 +22,74 @@ class ZipArchiveEntry {
 	private $archive;
 
 	/**
-	 * Constructs the ZIP entry
-	 * @param   string      $name       The name of the entry
-	 * @param   \ZipArchive $archive    The archive of the entry
+	 * Create a new entry with an index
+	 * @param   int             $index
+	 * @param   \ZipArchive     $archive
+	 * @return  ZipArchiveEntry
 	 */
-	public function __construct($name, \ZipArchive $archive) {
-		$this->name         = $name;
+	public static function fromIndex($index, \ZipArchive $archive) {
+		return new self($index, $archive);
+	}
+
+	/**
+	 * Create a new entry with a name
+	 * @param   string          $name
+	 * @param   \ZipArchive     $archive
+	 * @return  ZipArchiveEntry
+	 */
+	public static function fromName($name, \ZipArchive $archive) {
+
+		$index = $archive->locateName($name);
+
+		if ($index === false) {
+			throw new \InvalidArgumentException('Entry does not exist in the archive.');
+		}
+
+		return self::fromIndex($index, $archive);
+	}
+
+	/**
+	 * Constructs the ZIP entry
+	 * @param   string      $index      The entry index
+	 * @param   \ZipArchive $archive    The entry archive
+	 */
+	protected function __construct($index, \ZipArchive $archive) {
+		$this->index        = $index;
 		$this->archive      = $archive;
 	}
 
 	/**
-	 * Gets the name of the entry
+	 * Get the entry index
+	 * @return  int
+	 */
+	public function getIndex() {
+		return $this->index;
+	}
+
+	/**
+	 * Get the entry name
 	 * @return  string
 	 */
 	public function getName() {
-		return $this->name;
+		return $this->archive->getNameIndex($this->index);
 	}
 
 	/**
-	 * Gets the archive containing the entry
-	 * @return  ZipArchive
-	 */
-	public function getArchive() {
-		return $this->archive;
-	}
-
-	/**
-	 * Removes the entry from the archive
+	 * Remove the entry from the archive
 	 * @return  $this
 	 */
 	public function remove() {
-	
+		throw new \InvalidArgumentException;
+		return $this;
 	}
-	
+
+	/**
+	 * Rename the entry in the archive
+	 * @return  $this
+	 */
 	public function rename($to) {
-		
+		throw new \InvalidArgumentException;
+		return $this;
 	}
 
 	/**
@@ -65,7 +98,7 @@ class ZipArchiveEntry {
 	 * @return  $this
 	 */
 	public function extractTo($path) {
-		file_put_contents($path, $this->getArchive()->getFromName($this->getName()));
+		file_put_contents($path, $this->archive->getFromName($this->getIndex()));
 		return $this;
 	}
 

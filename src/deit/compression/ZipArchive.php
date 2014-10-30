@@ -3,13 +3,14 @@
 namespace deit\compression;
 use deit\filesystem\Finder;
 use deit\filesystem\Filesystem;
+use Traversable;
 
 /**
  * ZIP archive
  * 
  * @author 	James Newell <james@digitaledgeit.com.au>
  */
-class ZipArchive implements \ArrayAccess{
+class ZipArchive implements \ArrayAccess, \IteratorAggregate {
 	
 	/**
 	 * The ZIP archive
@@ -38,6 +39,14 @@ class ZipArchive implements \ArrayAccess{
 			throw new \InvalidArgumentException(sprintf('Unable to create/open ZIP archive "%s".', $path));
 		}
 		
+	}
+
+	/**
+	 * Get the number of entries in the archive
+	 * @return  int
+	 */
+	public function count() {
+		return $this->archive->numFiles;
 	}
 
 	/**
@@ -192,7 +201,11 @@ class ZipArchive implements \ArrayAccess{
 	 */
 	public function offsetGet($offset) {
 		if ($this->archive->locateName($offset) !== false) {
-			return new ZipArchiveEntry($offset, $this->archive);
+			if (is_numeric($offset)) {
+				return ZipArchiveEntry::fromIndex($offset, $this->archive);
+			} else {
+				return ZipArchiveEntry::fromName($offset, $this->archive);
+			}
 		} else {
 			return null;
 		}
@@ -217,6 +230,14 @@ class ZipArchive implements \ArrayAccess{
 	}
 
 	/**
+	 * Get an iterator
+	 * @return  ZipArchiveIterator
+	 */
+	public function getIterator() {
+		return new ZipArchiveIterator($this->archive);
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function __destruct() {
@@ -224,5 +245,4 @@ class ZipArchive implements \ArrayAccess{
 			$this->close();
 		}
 	}
-
 }

@@ -8,7 +8,7 @@ namespace deit\compression;
  */
 class ZipArchiveTest extends \PHPUnit_Framework_TestCase {
 
-	public function test_files() {
+	public function test_createFromFiles() {
 
 		$path   = tempnam(sys_get_temp_dir(), 'zip');
 		$zip    = new ZipArchive($path);
@@ -21,7 +21,7 @@ class ZipArchiveTest extends \PHPUnit_Framework_TestCase {
 		unlink($path);
 	}
 
-	public function test_folders() {
+	public function test_createFromFolders() {
 
 		$path   = tempnam(sys_get_temp_dir(), 'zip');
 		$zip    = new ZipArchive($path);
@@ -31,6 +31,20 @@ class ZipArchiveTest extends \PHPUnit_Framework_TestCase {
 		$this->assertGreaterThan(0, filesize($path));
 
 		unlink($path);
+	}
+
+	public function test_iterate() {
+
+		$zip = new ZipArchive(FIXTURES_DIR.'/test.zip');
+
+		$i = 0;
+		foreach ($zip as $entry) {
+			$this->assertEquals($i++, $entry->getIndex());
+		}
+		$this->assertEquals(6, $i);
+
+		$zip->close();
+
 	}
 
 }
