@@ -1,5 +1,5 @@
 {
-	"name":         "alexanderwanyoike/compression",
+	"name":         "digitaledgeit/compression",
 	"type":         "library",
 	"description":  "Library for the compression",
 	"keywords":     ["compression", "zip"],
