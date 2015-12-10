@@ -11,9 +11,15 @@
 			"email":    "james@digitaledgeit.com.au"
 		}
 	],
+	"repositories":[
+		{
+			"type": "git",
+			"url": "https://github.com/alexanderwanyoike/php-filesystem/"
+		}
+	],
 	"require": {
 		"php": ">=5.3",
-		"digitaledgeit/filesystem": "~0.2.0"
+		"digitaledgeit/filesystem": "dev-php-7"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~3.7"
